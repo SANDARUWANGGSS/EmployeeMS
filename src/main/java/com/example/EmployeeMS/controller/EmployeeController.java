@@ -123,4 +123,36 @@ public class EmployeeController
     }
 //    Get all employee ended
 
+//    Search  employee by id started
+    @GetMapping(value = "/searchEmployee/{empID}")
+    public ResponseEntity searchEmployee(@PathVariable int empID)
+    {
+        try
+        {
+            EmployeeDTO employeeDTO = employeeService.searchEmployee(empID);
+            if (employeeDTO != null)
+            {
+                responseDTO.setCode(VarList.RSP_SUCCESS);
+                responseDTO.setMessage("Successfully Searched");
+                responseDTO.setContent(employeeDTO);
+                return new ResponseEntity(responseDTO, HttpStatus.ACCEPTED);
+            }
+            else
+            {
+                responseDTO.setCode(VarList.RSP_NO_DATA_FOUND);
+                responseDTO.setMessage("No Employee Available for this empID");
+                responseDTO.setContent(null);
+                return new ResponseEntity(responseDTO, HttpStatus.BAD_REQUEST);
+            }
+        }
+        catch (Exception ex)
+        {
+            responseDTO.setCode(VarList.RSP_ERROR);
+            responseDTO.setMessage(ex.getMessage());
+            responseDTO.setContent(null);
+            return new ResponseEntity(responseDTO,HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+//    Search  employee by id ended
+
 }
