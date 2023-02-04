@@ -2,12 +2,15 @@ package com.example.EmployeeMS.controller;
 
 import com.example.EmployeeMS.dto.EmployeeDTO;
 import com.example.EmployeeMS.dto.ResponseDTO;
+import com.example.EmployeeMS.entity.Employee;
 import com.example.EmployeeMS.service.EmployeeService;
 import com.example.EmployeeMS.util.VarList;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 
 @RestController
@@ -19,6 +22,8 @@ public class EmployeeController
 
     @Autowired
     private ResponseDTO responseDTO;
+
+//    Add employee started
     @PostMapping(value = "/saveEmployee")
     public ResponseEntity saveEmployee(@RequestBody EmployeeDTO employeeDTO)
     {
@@ -55,7 +60,9 @@ public class EmployeeController
             return new ResponseEntity(responseDTO, HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
+//    Add employee ended
 
+//    Update employee started
     @PutMapping(value = "/updateEmployee" )
     public ResponseEntity updateEmployee(@RequestBody EmployeeDTO employeeDTO)
     {
@@ -92,4 +99,28 @@ public class EmployeeController
             return new ResponseEntity(responseDTO,HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
+//    Update employee ended
+
+//    Get all employee started
+    @GetMapping(value = "/getAllEmployees")
+    public ResponseEntity getAllEmployees()
+    {
+        try
+        {
+            List<EmployeeDTO> employeeDTOList = employeeService.getAllEmployee();
+            responseDTO.setCode(VarList.RSP_SUCCESS);
+            responseDTO.setMessage("Successfully Get");
+            responseDTO.setContent(employeeDTOList);
+            return new ResponseEntity(responseDTO, HttpStatus.ACCEPTED);
+        }
+        catch (Exception ex)
+        {
+            responseDTO.setCode(VarList.RSP_ERROR);
+            responseDTO.setMessage(ex.getMessage());
+            responseDTO.setContent(null);
+            return new ResponseEntity(responseDTO,HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+//    Get all employee ended
+
 }
